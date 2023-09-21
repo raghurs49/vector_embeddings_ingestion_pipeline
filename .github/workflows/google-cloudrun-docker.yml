@@ -52,7 +52,7 @@ env:
   PROJECT_ID: 	eternal-channel-394004 # TODO: update Google Cloud project id
   GAR_LOCATION: us-central1-a # TODO: update Artifact Registry location
   SERVICE: embed-gen-pipeline # TODO: update Cloud Run service name
-  REGION: us-central1-a # TODO: update Cloud Run service region
+  REGION: us-central1 # TODO: update Cloud Run service region
 
 jobs:
   deploy:
