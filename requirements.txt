@@ -1,0 +1,12 @@
+cloud-sql-python-connector[pg8000]
+SQLAlchemy
+google-cloud-aiplatform>=1.25 
+shapely<2.0.0
+google-cloud-storage
+pandas
+numpy
+requests==2.31
+flask
+gunicorn==20.1.0
+pg8000==1.29.8
+python-dotenv==0.15.0
