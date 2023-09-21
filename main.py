@@ -50,7 +50,7 @@ pool = sqlalchemy.create_engine(
 )
 
 @app.route('/embedd', methods=['GET'])
-def process_bills(request):
+def process_bills():
     try:
         filter_date = request.args.get("filter_date")
 
