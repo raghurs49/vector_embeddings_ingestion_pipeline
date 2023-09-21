@@ -53,7 +53,6 @@ env:
   GAR_LOCATION: us-central1 # TODO: update Artifact Registry location
   SERVICE: embed-gen-pipeline # TODO: update Cloud Run service name
   REGION: us-central1 # TODO: update Cloud Run service region
-  LOCATION: us-central-1
 
 jobs:
   deploy:
@@ -115,7 +114,7 @@ jobs:
              DB_NAME=${{ secrets.DB_NAME }}
              DB_INSTANCE=${{ secrets.DB_INSTANCE }}
              PROJECT_ID=${{ env.PROJECT_ID }}
-             LOCATION_ID=${{ env.LOCATION }}
+             LOCATION_ID=${{ env.REGION }}
              BUCKET_NAME=${{ secrets.BUCKET_NAME }}
              DB_PASSWORD=${{ secrets.DB_PASSWORD }}
              DB_TABLE=${{ secrets.DB_TABLE }}
