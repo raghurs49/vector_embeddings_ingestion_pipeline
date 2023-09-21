@@ -62,7 +62,7 @@ def process_bills():
 
         with pool.connect() as db_conn:
             bill_insert_stmt = sqlalchemy.text(
-                f"SELECT * FROM bills WHERE {os.environ['DB_TABLE']} > '{filtered_date}'"
+                f"SELECT * FROM {os.environ['DB_TABLE']} WHERE bills_inserted_date  > '{filtered_date}'"
             )
 
             result = db_conn.execute(bill_insert_stmt)
