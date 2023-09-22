@@ -80,12 +80,12 @@ def process_bills():
         def text_embedding() -> list:
             count = 0
             
-            for text in range(len(df['headline'])):
+            for text in range(len(bills_data_df['headline'])):
                 """Text embedding with a Large Language Model."""
                 if count > 5:
                     time.sleep(60)
                     count = 0
-                embeddings = model.get_embeddings([df['headline'][text]])
+                embeddings = model.get_embeddings([bills_data_df['headline'][text]])
                 for embedding in embeddings:
                     vector = embedding.values
                     vector_lst.append(vector)
