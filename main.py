@@ -75,18 +75,26 @@ def process_bills():
         bills_data_df['headline'] = bills_data_df['headline'].str.replace('\n', '')
         bills_data_df['title'] = bills_data_df['title'].str.replace('\n', '')
 
-        def get_embedding(text):
-            get_embedding.counter += 1
-            try:
-                if get_embedding.counter % 1 == 0:
-                    time.sleep(5)
-                return model.get_embeddings([text])[0].values.tolist()
-            except:
-                return []
 
-        get_embedding.counter = 0
+        vector_lst = []
+        def text_embedding() -> list:
+            count = 0
+            
+            for text in range(len(df['headline'])):
+                """Text embedding with a Large Language Model."""
+                if count > 5:
+                    time.sleep(60)
+                    count = 0
+                embeddings = model.get_embeddings([df['headline'][text]])
+                for embedding in embeddings:
+                    vector = embedding.values
+                    vector_lst.append(vector)
+                    print(f"Length of Embedding Vector: {len(vector)}")
+                    count += 1
+            return vector_lst
+            
+        bills_data_df['embedding'] = text_embedding()
 
-        bills_data_df["embedding"] = bills_data_df["headline"].apply(lambda x: get_embedding(x))
         
         # Define the path to the local file you want to upload
         local_file_path = f"embeddings_bills_{datetime.now().strftime('%Y-%m-%d')}.csv"
