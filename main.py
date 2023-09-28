@@ -9,6 +9,7 @@ from vertexai.preview.language_models import TextEmbeddingModel
 import time
 import numpy as np
 import os
+import json
 # Hydrate the environment from the .env file
 from dotenv import load_dotenv
 
@@ -62,18 +63,21 @@ def process_bills():
 
         with pool.connect() as db_conn:
             bill_insert_stmt = sqlalchemy.text(
-                f"SELECT * FROM {os.environ['DB_TABLE']} WHERE bills_inserted_date  > '{filtered_date}'"
+                f"SELECT summarized_bill FROM {os.environ['DB_TABLE']} WHERE bills_inserted_date  >= '{filtered_date}'"
             )
 
             result = db_conn.execute(bill_insert_stmt)
             rows = result.fetchall()
 
-        columns = ['headline', 'title', 'twitter', 'bills_inserted_date']
-        bills_data_df = pd.DataFrame(rows, columns=columns)
+        bills_data = json.loads(rows[0][0])
+
+        columns = ['headline', 'story', 'twitter']
+        
+        bills_data_df = pd.DataFrame([bills_data], columns=columns)
 
         # Replace '\n' with an empty string in the respective columns
         bills_data_df['headline'] = bills_data_df['headline'].str.replace('\n', '')
-        bills_data_df['title'] = bills_data_df['title'].str.replace('\n', '')
+        bills_data_df['story'] = bills_data_df['story'].str.replace('\n', '')
 
 
         vector_lst = []
