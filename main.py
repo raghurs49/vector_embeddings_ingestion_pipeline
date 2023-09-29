@@ -97,6 +97,8 @@ def process_bills():
             
         bills_data_df['embedding'] = text_embedding()
 
+        print(f" Total embeddings generated: {bills_data_df['embedding'].shape[0]} for records fetched from Cloud SQL table: {bills_data_df.shape}[0]")
+
         
         # Define the path to the local file you want to upload
         local_file_path = f"embeddings_bills_{datetime.now().strftime('%Y-%m-%d')}.csv"
