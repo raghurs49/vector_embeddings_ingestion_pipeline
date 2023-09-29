@@ -68,12 +68,10 @@ def process_bills():
 
             result = db_conn.execute(bill_insert_stmt)
             rows = result.fetchall()
-        print(rows)
-        bills_data = json.loads(rows[0][0])
-
-        columns = ['headline', 'story', 'twitter']
         
-        bills_data_df = pd.DataFrame([bills_data], columns=columns)
+        bills_data = [eval(item[0]) for item in rows]
+        columns = ['headline', 'story', 'twitter']
+        bills_data_df = pd.DataFrame(bills_data, columns=columns)
 
         # Replace '\n' with an empty string in the respective columns
         bills_data_df['headline'] = bills_data_df['headline'].str.replace('\n', '')
