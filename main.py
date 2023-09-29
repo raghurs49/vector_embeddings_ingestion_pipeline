@@ -68,7 +68,7 @@ def process_bills():
 
             result = db_conn.execute(bill_insert_stmt)
             rows = result.fetchall()
-
+        print(rows)
         bills_data = json.loads(rows[0][0])
 
         columns = ['headline', 'story', 'twitter']
@@ -93,7 +93,7 @@ def process_bills():
                 for embedding in embeddings:
                     vector = embedding.values
                     vector_lst.append(vector)
-                    print(f"Length of Embedding Vector: {len(vector)}")
+                    # print(f"Length of Embedding Vector: {len(vector)}")
                     count += 1
             return vector_lst
             
