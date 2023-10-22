@@ -115,7 +115,6 @@ jobs:
              DB_INSTANCE=${{ secrets.DB_INSTANCE }}
              PROJECT_ID=${{ env.PROJECT_ID }}
              LOCATION_ID=${{ env.REGION }}
-             BUCKET_NAME=${{ secrets.BUCKET_NAME }}
              DB_PASSWORD=${{ secrets.DB_PASSWORD }}
              DB_TABLE=${{ secrets.DB_TABLE }}
 
