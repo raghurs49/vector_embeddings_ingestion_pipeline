@@ -69,7 +69,7 @@ def process_bills():
             rows = result.fetchall()
 
         bills_data = [dict(eval(item[0]), bills_inserted_date=item[1]) for item in rows]
-        columns = ['headline', 'story', 'twitter', 'bills_date']
+        columns = ['headline', 'story', 'twitter', 'bills_inserted_date']
         bills_data_df = pd.DataFrame(bills_data, columns=columns)
 
 
