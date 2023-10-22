@@ -19,7 +19,6 @@ from flask import Flask, render_template, request, session
 # Initialize Google Cloud project and location
 PROJECT_ID = os.environ['PROJECT_ID']
 LOCATION = os.environ['LOCATION_ID']
-BUCKET_NAME = os.environ['BUCKET_NAME']
 
 # Initialize Vertex AI
 vertexai.init(project=PROJECT_ID, location=LOCATION)
