@@ -103,8 +103,8 @@ def process_bills():
                     "VALUES (:headline, :story, :twitter, :embedding, :bills_inserted_date)"
                 )
         
-         for i in range(len(bills_data_df['headline'])):
-             bill_embed_parameters = {
+        for i in range(len(bills_data_df['headline'])):
+            bill_embed_parameters = {
                     "headline": bills_data['headline'][i],
                     "story": bills_data['story'][i],
                     "twitter": bills_data['twitter'][i],
@@ -112,7 +112,7 @@ def process_bills():
                     "bills_inserted_date":  bills_data['bills_inserted_date'][i]
                 }
                 # Insert the entry into the table
-             db_conn.execute(bills_embed_insert_stmt, parameters=bill_embed_parameters)
+            db_conn.execute(bills_embed_insert_stmt, parameters=bill_embed_parameters)
 
         
         print(f" Total embeddings generated: {bills_data_df['embedding'].shape[0]} for records fetched from Cloud SQL table: {bills_data_df.shape}[0]")
