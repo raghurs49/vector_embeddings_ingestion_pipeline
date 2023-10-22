@@ -103,7 +103,7 @@ def process_bills():
                     "VALUES (:headline, :story, :twitter, :embedding, :bills_inserted_date)"
                 )
         
-         for i in range(len(bills_data['bills_data_df'])):
+         for i in range(len(bills_data_df['headline'])):
              bill_embed_parameters = {
                     "headline": bills_data['headline'][i],
                     "story": bills_data['story'][i],
