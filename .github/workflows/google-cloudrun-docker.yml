@@ -49,7 +49,7 @@ on:
     branches: [ "main" ]
 
 env:
-  PROJECT_ID: 	eternal-channel-394004 # TODO: update Google Cloud project id
+  PROJECT_ID: upwork-client-work # TODO: update Google Cloud project id
   GAR_LOCATION: us-central1 # TODO: update Artifact Registry location
   SERVICE: embed-gen-pipeline # TODO: update Cloud Run service name
   REGION: us-central1 # TODO: update Cloud Run service region
