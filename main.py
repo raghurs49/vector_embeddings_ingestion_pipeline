@@ -63,15 +63,16 @@ def process_bills():
 
         with pool.connect() as db_conn:
             bill_insert_stmt = sqlalchemy.text(
-                f"SELECT summarized_bill FROM {os.environ['DB_TABLE']} WHERE bills_inserted_date  >= '{filtered_date}'"
+                f"SELECT summarized_bill, bills_inserted_date FROM {os.environ['DB_TABLE']} WHERE bills_inserted_date  >= '{filtered_date}'"
             )
 
             result = db_conn.execute(bill_insert_stmt)
             rows = result.fetchall()
-        
-        bills_data = [eval(item[0]) for item in rows]
-        columns = ['headline', 'story', 'twitter']
+
+        bills_data = [dict(eval(item[0]), bills_inserted_date=item[1]) for item in rows]
+        columns = ['headline', 'story', 'twitter', 'bills_date']
         bills_data_df = pd.DataFrame(bills_data, columns=columns)
+
 
         # Replace '\n' with an empty string in the respective columns
         bills_data_df['headline'] = bills_data_df['headline'].str.replace('\n', '')
@@ -97,42 +98,30 @@ def process_bills():
             
         bills_data_df['embedding'] = text_embedding()
 
-        print(f" Total embeddings generated: {bills_data_df['embedding'].shape[0]} for records fetched from Cloud SQL table: {bills_data_df.shape}[0]")
+        bills_embed_insert_stmt = sqlalchemy.text(
+                    "INSERT INTO {os.environ['EMBED_DB_TABLE']} (headline, story, twitter, embedding, bills_inserted_date) "
+                    "VALUES (:headline, :story, :twitter, :embedding, :bills_inserted_date)"
+                )
+        
+         for i in range(len(bills_data['house_bill_id'])):
+             bill_embed_parameters = {
+                    "headline": bills_data['headline'][i],
+                    "story": bills_data['story'][i],
+                    "twitter": bills_data['twitter'][i],
+                    "embedding": bills_data['embedding'][i],
+                    "bills_inserted_date":  bills_data['bills_inserted_date'][i]
+                }
+                # Insert the entry into the table
+             db_conn.execute(bills_embed_insert_stmt, parameters=bill_embed_parameters)
 
         
-        # Define the path to the local file you want to upload
-        local_file_path = f"embeddings_bills_{datetime.now().strftime('%Y-%m-%d')}.csv"
+        print(f" Total embeddings generated: {bills_data_df['embedding'].shape[0]} for records fetched from Cloud SQL table: {bills_data_df.shape}[0]")
 
-        # Save DataFrame to a CSV file
-        bills_data_df["embedding"].to_csv(local_file_path, index=False)
-
-        # Upload data to GCS
-        upload_data_to_gcs(local_file_path)
-
+       
         return "Data processing and upload completed successfully."
 
     except Exception as e:
         return f"An error occurred: {str(e)}"
-
-def upload_data_to_gcs(local_file_path):
-    try:
-        # Create a client to interact with GCS
-        storage_client = storage.Client(project=PROJECT_ID)
-         # Define the path to the local file you want to upload
-
-        # Define the name you want to give the file in GCS
-        blob_name = f"embeddings-folder/embeddings_bills_{datetime.now().strftime('%Y-%m-%d')}.csv"
-
-        # Get a reference to the bucket
-        bucket = storage_client.bucket(bucket_name=BUCKET_NAME)
-
-        # Upload the local file to GCS
-        blob = bucket.blob(blob_name)
-        blob.upload_from_filename(local_file_path)
-
-        return f'File {local_file_path} uploaded to GCS bucket {BUCKET_NAME} as {blob_name}'
-    except Exception as e:
-        return f"Error uploading to GCS: {str(e)}"
 
 
 if __name__ == '__main__':
