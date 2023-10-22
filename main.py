@@ -101,10 +101,9 @@ def process_bills():
             
         bills_data_df['embedding'] = text_embedding()
 
-        EMBED_DB_TABLE = os.environ['EMBED_DB_TABLE']
         
         bills_embed_insert_stmt = sqlalchemy.text(
-                    f"INSERT INTO {EMBED_DB_TABLE} (headline, story, twitter, embedding, bills_inserted_date)"
+                    f"INSERT INTO {os.environ['EMBED_DB_TABLE']} (headline, story, twitter, embedding, bills_inserted_date)"
                     "VALUES (:headline, :story, :twitter, :embedding, :bills_inserted_date)"
                 )
 
