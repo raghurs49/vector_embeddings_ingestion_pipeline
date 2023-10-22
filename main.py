@@ -108,11 +108,11 @@ def process_bills():
         
         for i in range(len(bills_data_df['headline'])):
             bill_embed_parameters = {
-                    "headline": bills_data['headline'][i],
-                    "story": bills_data['story'][i],
-                    "twitter": bills_data['twitter'][i],
-                    "embedding": bills_data['embedding'][i],
-                    "bills_inserted_date":  bills_data['bills_inserted_date'][i]
+                    "headline": bills_data_df['headline'][i],
+                    "story": bills_data_df['story'][i],
+                    "twitter": bills_data_df['twitter'][i],
+                    "embedding": bills_data_df['embedding'][i],
+                    "bills_inserted_date":  bills_data_df['bills_inserted_date'][i]
                 }
                 # Insert the entry into the table
             db_conn.execute(bills_embed_insert_stmt, parameters=bill_embed_parameters)
