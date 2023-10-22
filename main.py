@@ -77,7 +77,6 @@ def process_bills():
         bills_data_df['headline'] = bills_data_df['headline'].str.replace('\n', '')
         bills_data_df['story'] = bills_data_df['story'].str.replace('\n', '')
 
-        print(bills_data_df.head(1))
         vector_lst = []
         def text_embedding() -> list:
             count = 0
@@ -87,7 +86,12 @@ def process_bills():
                 if count > 59:
                     time.sleep(60)
                     count = 0
-                embeddings = model.get_embeddings([bills_data_df['headline'][text]])
+                    
+                if not bills_data_df['headline'][text]:
+                    embeddings = model.get_embeddings([bills_data_df['story'][text]])
+                else:
+                    embeddings = model.get_embeddings([bills_data_df['headline'][text]])
+                    
                 for embedding in embeddings:
                     vector = embedding.values
                     vector_lst.append(vector)
