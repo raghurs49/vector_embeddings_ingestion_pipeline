@@ -105,17 +105,18 @@ def process_bills():
                     "INSERT INTO {os.environ['EMBED_DB_TABLE']} (headline, story, twitter, embedding, bills_inserted_date) "
                     "VALUES (:headline, :story, :twitter, :embedding, :bills_inserted_date)"
                 )
-        
-        for i in range(len(bills_data_df['headline'])):
-            bill_embed_parameters = {
-                    "headline": bills_data_df['headline'][i],
-                    "story": bills_data_df['story'][i],
-                    "twitter": bills_data_df['twitter'][i],
-                    "embedding": bills_data_df['embedding'][i],
-                    "bills_inserted_date":  bills_data_df['bills_inserted_date'][i]
-                }
-                # Insert the entry into the table
-            db_conn.execute(bills_embed_insert_stmt, parameters=bill_embed_parameters)
+
+        with pool.connect() as db_conn:
+            for i in range(len(bills_data_df['headline'])):
+                bill_embed_parameters = {
+                        "headline": bills_data_df['headline'][i],
+                        "story": bills_data_df['story'][i],
+                        "twitter": bills_data_df['twitter'][i],
+                        "embedding": bills_data_df['embedding'][i],
+                        "bills_inserted_date":  bills_data_df['bills_inserted_date'][i]
+                    }
+                    # Insert the entry into the table
+                db_conn.execute(bills_embed_insert_stmt, parameters=bill_embed_parameters)
 
         
         print(f" Total embeddings generated: {bills_data_df['embedding'].shape[0]} for records fetched from Cloud SQL table: {bills_data_df.shape}[0]")
