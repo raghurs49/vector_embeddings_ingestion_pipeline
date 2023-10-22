@@ -54,12 +54,6 @@ def process_bills():
     try:
         filter_date = request.args.get("filter_date")
 
-        # If a filter_date argument is passed, use it; otherwise, use 7 days ago from the current date.
-        if filter_date:
-            filtered_date = filter_date
-        else:
-            filtered_date = (datetime.now() - timedelta(days=8)).strftime("%Y-%m-%d")
-
         with pool.connect() as db_conn:
             if filter_date:
                 filtered_date = filter_date
