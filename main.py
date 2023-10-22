@@ -58,12 +58,12 @@ def process_bills():
             if filter_date:
                 filtered_date = filter_date
                 bill_insert_stmt = sqlalchemy.text(
-                    f"SELECT summarized_bill FROM {os.environ['DB_TABLE']} WHERE bills_inserted_date  = '{filtered_date}'"
+                    f"SELECT summarized_bill, bills_inserted_date FROM {os.environ['DB_TABLE']} WHERE bills_inserted_date  = '{filtered_date}'"
                 )
             else:
                 filtered_date = (datetime.now() - timedelta(days=8)).strftime("%Y-%m-%d")
                 bill_insert_stmt = sqlalchemy.text(
-                    f"SELECT summarized_bill FROM {os.environ['DB_TABLE']} WHERE bills_inserted_date  >= '{filtered_date}'"
+                    f"SELECT summarized_bill, bills_inserted_date FROM {os.environ['DB_TABLE']} WHERE bills_inserted_date  >= '{filtered_date}'"
                 )
                 
             result = db_conn.execute(bill_insert_stmt)
