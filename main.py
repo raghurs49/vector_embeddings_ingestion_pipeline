@@ -77,7 +77,7 @@ def process_bills():
         bills_data_df['headline'] = bills_data_df['headline'].str.replace('\n', '')
         bills_data_df['story'] = bills_data_df['story'].str.replace('\n', '')
 
-
+        print(bills_data_df.head(1))
         vector_lst = []
         def text_embedding() -> list:
             count = 0
