@@ -85,7 +85,7 @@ def process_bills():
             
             for text in range(len(bills_data_df['headline'])):
                 """Text embedding with a Large Language Model."""
-                if count > 5:
+                if count > 59:
                     time.sleep(60)
                     count = 0
                 embeddings = model.get_embeddings([bills_data_df['headline'][text]])
